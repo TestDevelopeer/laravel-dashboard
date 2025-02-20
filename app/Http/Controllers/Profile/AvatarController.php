@@ -12,6 +12,8 @@ class AvatarController extends Controller
     public function update(UpdateAvatarRequest $request): RedirectResponse
     {
         // store avatar
-        return redirect(route('profile.edit'));
+        $path = $request->file('avatar')->store('avatars');
+        auth()->user()->update(['avatar' => storage_path() . "/$path"]);
+        return redirect(route('profile.edit'))->with('message', 'Avatar is updated');
     }
 }
